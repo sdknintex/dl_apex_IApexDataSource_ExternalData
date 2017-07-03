@@ -64,11 +64,11 @@ To create the Apex Data relationship
 4. In **Relationship (What you want)**, select **ApexOpportunity**.
 5. Save the Apex Data relationship.
 
-## SampleDrawloopApexData1SFObject sample
+## SampleDrawloopApexDataQuery sample
 
-The sample is a single file, named SampleDrawloopApexData - 1 Sf Object.java.
+The sample is a single file, named SampleDrawloopApexData - 1 Sf Query.java.
 
-Demonstrates how to implement the IApexDataSource interface to provide data from a single Salesforce object for an Apex Data relationship.
+Demonstrates how to implement the IApexDataSource interface to provide data for a Document Package using an Apex Data relationship that runs a SOQL query. 
 
 ### Implmenting SampleDrawloopApexDataQuery sample
 
