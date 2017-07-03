@@ -1,7 +1,7 @@
-// Use this sample in the Nintex Drawloop app to provide data from a single Salesforce object to generate documents.
+// Sample Apex class leveraging Nintex Drawloop feature Apex Data
 // Class must be global for Nintex Drawloop to access it
 // Class must implement the Loop.IApexDataSource Apex interface to use it in a Document Package Relationship
-global class SampleDrawloopApexData1SFObject implements Loop.IApexDataSource {
+global class SampleDrawloopApexDataQuery implements Loop.IApexDataSource {
     
     // Loop.IApexDataSource interface requires four public methods with the following signatures:
     // Set<string> getGlobalDescribe()
@@ -10,13 +10,16 @@ global class SampleDrawloopApexData1SFObject implements Loop.IApexDataSource {
     // Loop.ExternalData.QueryResultSet query(Loop.ExternalData.QueryRequestInfo requestInfo)
     
     // optional, but good practice: use variables to store object names to avoid mistakes from typos
-    private string opportunityObjectName = 'ApexOpportunity';
+    private string sampleSoqlObjectName = 'ApexSoql';
+    
+    // query used for the 'ApexSoql' object
+    private string sampleSoqlQuery = 'SELECT Name, Title FROM Contact WHERE Title LIKE \'C%\' AND AccountId = :accountId';
     
     public Set<string> getGlobalDescribe() {
         // Return a set of object names that this Apex class will provide data for.
-        // In this example, we will provide data for a single Opportunity.
+        // In this example, we will provide data from a single SOQL query.
         return new Set<string>{
-            opportunityObjectName
+            sampleSoqlObjectName
         };
     }
     
@@ -28,7 +31,8 @@ global class SampleDrawloopApexData1SFObject implements Loop.IApexDataSource {
     
     public List<Loop.ExternalData.DataObject> describeObjects(List<string> objectNames) {
         // Describe each object in objectNames.
-        // In this example, we will use all fields for each Salesforce object being used.
+        // In this example, we will use a hard coded set of fields. This is recommended **only** for small sets of fields. For larger sets,
+        // use Field Sets or a full object describe.
         
         // Declare the variable to be returned.
         List<Loop.ExternalData.DataObject> describeObjectResults = new List<Loop.ExternalData.DataObject>();
@@ -38,26 +42,10 @@ global class SampleDrawloopApexData1SFObject implements Loop.IApexDataSource {
             // Declare variable to store field data for the object
             List<Loop.ExternalData.FieldInfo> fields = new List<Loop.ExternalData.FieldInfo>();
             
-            if (objectName == opportunityObjectName) {
+            if (objectName == sampleSoqlObjectName) {
                 // Describe the fields for this object.
-                
-                // Loop through fields on the Opportunity object, store the info, and add to fields
-                Map<String, Schema.SObjectField> fieldMap = Schema.SObjectType.Opportunity.Fields.getMap();
-                for (string fieldKey : fieldMap.keySet()) {
-                    Schema.DescribeFieldResult fieldDescribe = fieldMap.get(fieldKey).getDescribe();
-                    
-                    // Store the field info for this field
-                    Loop.ExternalData.FieldInfo fieldInfo = new Loop.ExternalData.FieldInfo(fieldKey, fieldDescribe.getType());
-                    fieldInfo.label = fieldDescribe.getLabel();
-                    fieldInfo.scale = fieldDescribe.getScale();
-                    
-                    if (!fieldDescribe.getReferenceTo().isEmpty()) {
-                        // referenceTo is needed to define a relationship between parent and child objects
-                        fieldInfo.referenceTo = string.valueOf(fieldDescribe.getReferenceTo()[0]);
-                    }
-                    
-                    fields.add(fieldInfo);
-                }
+                fields.add(new Loop.ExternalData.FieldInfo('Name', Schema.DisplayType.STRING));
+                fields.add(new Loop.ExternalData.FieldInfo('Title', Schema.DisplayType.STRING));
             }
             
             // Declare variable to add to results list using fields described above
@@ -73,8 +61,8 @@ global class SampleDrawloopApexData1SFObject implements Loop.IApexDataSource {
     public Loop.ExternalData.QueryResultSet query(Loop.ExternalData.QueryRequestInfo requestInfo) {
         // Provide data for each object in requestInfo.GetObjectNames()
         
-        // Assume that the Document Package is run from the Opportunity
-        Id opportunityId = requestInfo.RecordId;
+        // Assume that the Document Package is run from the Account
+        Id accountId = requestInfo.RecordId;
         
         // Declare the variable to be returned.
         Loop.ExternalData.QueryResultSet queryResultSet = new Loop.ExternalData.QueryResultSet();
@@ -87,24 +75,15 @@ global class SampleDrawloopApexData1SFObject implements Loop.IApexDataSource {
             // Declare query result to add to QueryResultSet instance
             Loop.ExternalData.QueryResult queryResult = new Loop.ExternalData.QueryResult(objectName, fields);
             
-            // set up fields list and query to get data for QueryResult instance
-            if (objectName == opportunityObjectName) {
-                // Get list of fields from the Opportunity object
-                Map<String, Schema.SObjectField> fieldMap = Schema.SObjectType.Opportunity.Fields.getMap();
-                for (string fieldKey : fieldMap.keySet()) {
-                    fields.add(fieldKey);
-                }
+            // set up fields list to get data for QueryResult instance
+            if (objectName == sampleSoqlObjectName) {
+                fields = new List<string>{ 'Name', 'Title' };
                 
                 // Since we added fields to the list, update the QueryResult instance
                 queryResult = new Loop.ExternalData.QueryResult(objectName, fields);
                 
-                string query = string.format(
-                    'SELECT {0} FROM Opportunity WHERE Id = :opportunityId',
-                    new List<string>{ string.join(fields, ',') }
-                );
-                
                 // for each row of data returned by the query
-                for (SObject record : Database.query(query)) {
+                for (SObject record : Database.query(sampleSoqlQuery)) {
                     // Store the values (as strings) from the record in the same order of the fields defined in the QueryResult instance
                     List<string> recordValues = new List<string>();
                     for (string field : fields) {

@@ -1,7 +1,7 @@
 # dl_apex_IApexDataSource_ExternalData
-The following sample collection demonstrates how to implement the IApexDataSource interface to define external data sources that use the various inner classes implemented in the ExternalData class to provide external data for use in DDPs.
-
 Each sample in this collection is a single, standalone file, meant to be implmented from a Developer Console in Salesforce. 
+
+These samples demonstrate how to implement the IApexDataSource and ExternalData class to provide data for use in Document Packages with the Nintex Drawloop app.
 
 ## ExternalData sample
 
@@ -10,6 +10,8 @@ The sample is a single file, named ExternalData.java.
 Demonstrates how to implement the IApexDataSource interface and use the other inner classes included with the ExternalData class to gather data from an external service for use within Drawloop.
 
 ### Implementing ExternalData sample
+
+To implement the sample
 
 1. Log into your Salesforce instance, using a Developer Edition account.
 2. In a text editor, open the sample file named ExternalData.java.
@@ -29,6 +31,8 @@ Demonstrates how to implement the IApexDataSource interface to provide an extern
 
 ### Implmenting OppLineItemGrouping sample
 
+To implement the sample
+
 1. Log into your Salesforce instance, using a Developer Edition account.
 2. In a text editor, open the sample file named OppLineItemGrouping.java.
 3. From your Salesforce instance, open the Developer Console.
@@ -44,14 +48,42 @@ Demonstrates how to implement the IApexDataSource interface to provide data from
 
 ### Implmenting SampleDrawloopApexData1SFObject sample
 
-1. Log into your Salesforce instance, using a Developer Edition account.
-2. In a text editor, open the sample file named SampleDrawloopApexData - 1 Sf Object.java.
-3. From your Salesforce instance, open the Developer Console.
-4. From the Developer Console, create a new Apex class named **SampleDrawloopApexData1SFObject**.
-5. Paste the contents of the sample file into the Developer Console, overwriting the existing contents
-6. Save the new Apex class, and then close the Developer Console.
-7. In the app, from Drawloop Document Packages, create a new Document Package based on the Opportunity object.
-8. From the new Document Package, in the Relationships related list, add an Apex Data relationship.
-9. In the Apex Data relationship, from Apex Class, select **--No Namespace--** and **SampleDrawloopApexData1SFObject**.
-10. In **Relationship (What you want)**, select **ApexOpportunity**.
-11. Save the Apex Data relationship.
+To create the Apex class
+
+1. Log into your Salesforce instance.
+2. From your Salesforce instance, open the Developer Console.
+3. From the Developer Console, create a new Apex class named **SampleDrawloopApexData1SFObject**.
+4. Paste the contents of the sample file (SampleDrawloopApexData - 1 Sf Object.java) into the Developer Console, overwriting the existing contents.
+5. Save the new Apex class, and then close the Developer Console.
+
+To create the Apex Data relationship
+
+1. In Nintex Drawloop, from **Drawloop Document Packages**, create a new Document Package based on the Opportunity object.
+2. From the new Document Package, in the Relationships related list, add an Apex Data relationship.
+3. In the Apex Data relationship, from Apex Class, select **--No Namespace--** and **SampleDrawloopApexData1SFObject**.
+4. In **Relationship (What you want)**, select **ApexOpportunity**.
+5. Save the Apex Data relationship.
+
+## SampleDrawloopApexData1SFObject sample
+
+The sample is a single file, named SampleDrawloopApexData - 1 Sf Object.java.
+
+Demonstrates how to implement the IApexDataSource interface to provide data from a single Salesforce object for an Apex Data relationship.
+
+### Implmenting SampleDrawloopApexDataQuery sample
+
+To create the Apex class
+
+1. Log into your Salesforce instance.
+2. From your Salesforce instance, open the Developer Console.
+3. From the Developer Console, create a new Apex class named **SampleDrawloopApexDataQuery**.
+4. Paste the contents of the sample file (SampleDrawloopApexData - 1 Sf Query.java) into the Developer Console, overwriting the existing contents.
+5. Save the new Apex class, and then close the Developer Console.
+
+To create the Apex Data relationship
+
+1. In Nintex Drawloop, from **Drawloop Document Packages**, create a new Document Package based on the Opportunity object.
+2. From the new Document Package, in the Relationships related list, add an Apex Data relationship.
+3. In the Apex Data relationship, from Apex Class, select **--No Namespace--** and **SampleDrawloopApexQuery**.
+4. In **Relationship (What you want)**, select **ApexSoql**.
+5. Save the Apex Data relationship.
