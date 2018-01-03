@@ -1,5 +1,6 @@
 # dl_apex_IApexDataSource_ExternalData
-Each sample in this collection is a single, standalone file, meant to be implemented from a Developer Console in Salesforce. 
+
+Each sample in this collection is a single, standalone file, meant to be implemented from a Developer Console in Salesforce.
 
 These samples demonstrate how to implement the `IApexDataSource` and `ExternalData` class to provide data for use in Document Packages with the Nintex Drawloop app.
 
